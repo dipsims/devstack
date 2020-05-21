@@ -1,3 +1,4 @@
 SITE_LMS=dev.dipsims.xyz
 SITE_CMS=studio.dev.dipsims.xyz
 SITE_ECOMMERCE=ecommerce.dev.dipsims.xyz
+ENABLE_DJANGO_TOOLBAR=0

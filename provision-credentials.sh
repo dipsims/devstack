@@ -6,12 +6,6 @@
 name=credentials
 port=18150
 
-if [ -n "${SITE_LMS}" ]; then
-    SITE_LMS=$SITE_LMS
-else
-    SITE_LMS=localhost:18000
-fi
-
 docker-compose $DOCKER_COMPOSE_FILES up -d $name
 
 echo -e "${GREEN}Installing requirements for ${name}...${NC}"

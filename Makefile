@@ -33,6 +33,10 @@ include options.mk
 # You can use this file to configure your Devstack. It is ignored by git.
 -include options.local.mk  # Prefix with hyphen to tolerate absence of file.
 
+SITE_LMS=localhost:18000
+SITE_CMS=localhost:18010
+SITE_ECOMMERCE=localhost:18130
+
 # Include local makefile with additional targets.
 -include local.mk  # Prefix with hyphen to tolerate absence of file.
 
