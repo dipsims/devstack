@@ -6,6 +6,12 @@
 name=credentials
 port=18150
 
+if [ -n "${SITE_LMS}" ]; then
+    SITE_LMS=$SITE_LMS
+else
+    SITE_LMS=localhost:18000
+fi
+
 docker-compose $DOCKER_COMPOSE_FILES up -d $name
 
 echo -e "${GREEN}Installing requirements for ${name}...${NC}"
@@ -18,7 +24,7 @@ echo -e "${GREEN}Creating super-user for ${name}...${NC}"
 docker exec -t edx.devstack.${name}  bash -c 'source /edx/app/credentials/credentials_env && cd /edx/app/credentials/credentials && echo "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(\"edx\", \"edx@example.com\", \"edx\") if not User.objects.filter(username=\"edx\").exists() else None" | python /edx/app/$1/$1/manage.py shell' -- "$name"
 
 echo -e "${GREEN}Configuring site for ${name}...${NC}"
-docker exec -t edx.devstack.${name} bash -c 'source /edx/app/credentials/credentials_env && cd /edx/app/credentials/ && ./manage.py create_or_update_site --site-id=1 --site-domain=localhost:18150 --site-name="Open edX" --platform-name="Open edX" --company-name="Open edX" --lms-url-root=http://localhost:18000 --catalog-api-url=http://edx.devstack.discovery:18381/api/v1/ --tos-url=http://localhost:18000/tos --privacy-policy-url=http://localhost:18000/privacy --homepage-url=http://localhost:18000 --certificate-help-url=http://localhost:18000/faq --records-help-url=http://localhost:18000/faq --theme-name=openedx'
+docker exec -t edx.devstack.${name} bash -c "source /edx/app/credentials/credentials_env && cd /edx/app/credentials/ && ./manage.py create_or_update_site --site-id=1 --site-domain=localhost:18150 --site-name="Open edX" --platform-name=\"Open edX\" --company-name="Open edX" --lms-url-root=http://$SITE_LMS --catalog-api-url=http://edx.devstack.discovery:18381/api/v1/ --tos-url=http://$SITE_LMS/tos --privacy-policy-url=http://$SITE_LMS/privacy --homepage-url=http://$SITE_LMS --certificate-help-url=http://$SITE_LMS/faq --records-help-url=http://$SITE_LMS/faq --theme-name=openedx"
 
 ./provision-ida-user.sh ${name} ${name} ${port}
 

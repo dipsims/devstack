@@ -63,12 +63,22 @@ fi
 
 if should_check lms; then
     echo "Checking LMS heartbeat:"
+    if [ -n "${SITE_LMS}" ]; then
+        SITE_LMS=$SITE_LMS
+    else
+        SITE_LMS=localhost:18000
+    fi
     run_check lms_heartbeat lms \
-        "curl --fail -L http://localhost:18000/heartbeat"
+        "curl --fail -L http://$SITE_LMS/heartbeat"
 
     echo "Checking Studio heartbeat:"
+    if [ -n "${SITE_CMS}" ]; then
+        SITE_CMS=$SITE_CMS
+    else
+        SITE_CMS=localhost:18010
+    fi
     run_check studio_heartbeat lms \
-        "curl --fail -L http://localhost:18010/heartbeat"
+        "curl --fail -L http://$SITE_CMS/heartbeat"
 
     echo "Validating LMS volume:"
     run_check lms_volume lms \
@@ -77,8 +87,13 @@ fi
 
 if should_check ecommerce; then
     echo "Checking ecommerce health:"
+    if [ -n "${SITE_ECOMMERCE}" ]; then
+        SITE_ECOMMERCE=$SITE_ECOMMERCE
+    else
+        SITE_ECOMMERCE=localhost:18130
+    fi
     run_check ecommerce_heartbeat ecommerce \
-        "curl --fail -L http://localhost:18130/health/"
+        "curl --fail -L http://$SITE_ECOMMERCE/health/"
 fi
 
 if should_check discovery; then

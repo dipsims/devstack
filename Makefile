@@ -24,7 +24,7 @@
         stop.watchers stop.xqueue studio-restart studio-shell studio-static \
         studio-update-db studio-watcher-shell update-db upgrade upgrade \
         validate validate-lms-volume vnc-passwords xqueue_consumer-restart \
-        xqueue_consumer-shell xqueue-restart xqueue-shell
+        xqueue_consumer-shell xqueue-restart xqueue-shell sites
 
 # Include options (configurable through options.local.mk)
 include options.mk
@@ -426,3 +426,8 @@ feature-toggle-state: ## Gather the state of feature toggles configured for vari
 
 selfcheck: ## check that the Makefile is well-formed
 	@echo "The Makefile is well-formed."
+
+sites:
+	@echo $$SITE_LMS
+	@echo $$SITE_CMS
+	@echo $$SITE_ECOMMERCE
